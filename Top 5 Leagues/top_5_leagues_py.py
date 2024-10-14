@@ -33,6 +33,11 @@ def fill_data(global_dict, country, season, goals, empty_seasons_dictionary=None
 
 
 def parse_and_fill(global_dict, url, season, empty_seasons_dictionary):
+    cumulative_25_list = ["Germany", "England", "France", "Spain", "Italy",
+                          "Argentina", "Brazil", "Scotland", "Netherlands", "Uruguay",
+                          "Croatia", "Wales", "Ireland", "Serbia", "Portugal",
+                          "Denmark", "Belgium", "Senegal", "Sweden", "Poland",
+                          "Ivory Coast", "Algeria", "Nigeria", "Bosnia-Herzegovina", "Austria"]
     # Step 1: Fetch the webpage content
     response = requests.get(url)
 
@@ -49,7 +54,8 @@ def parse_and_fill(global_dict, url, season, empty_seasons_dictionary):
         cols = [col.text.strip() for col in cols]  # Clean the text
         country = cols[3]
         goals = int(cols[5].rsplit(" ")[0])
-        fill_data(global_dict, country, season, goals, empty_seasons_dictionary)
+        if (country in cumulative_25_list):
+            fill_data(global_dict, country, season, goals, empty_seasons_dictionary)
         
 def get_urls(league, season):
     base_url = 'https://www.worldfootball.net/goalgetter/'
@@ -70,7 +76,7 @@ def create_empty_seasons_dictionary(seasons):
     for season in seasons:
         seasons_dictionary[season] = 0
     return seasons_dictionary
-            
+
 def extract_values_top_5_leagues(from_date, to_date):
     goals_per_nation_and_year = {}
     seasons = generate_seasons_years(int(from_date), int(to_date))
@@ -82,7 +88,7 @@ def extract_values_top_5_leagues(from_date, to_date):
             urls = get_urls(league, season)
             for url in urls:
                 parse_and_fill(goals_per_nation_and_year, url, season, empty_seasons_dictionary)
-            
+        # only_top_20(goals_per_nation_and_year, season)    
     return dict(sorted(goals_per_nation_and_year.items()))
 
 final_dictionary = extract_values_top_5_leagues(1985,1988)
