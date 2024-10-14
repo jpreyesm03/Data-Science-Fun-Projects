@@ -22,7 +22,17 @@ def generate_seasons_years(from_date, to_date):
         seasons_text.append(str(year) + "-" + str(year + 1))
     return seasons_text
 
-def fill_dictionary(dict, url, season):
+
+def fill_data(global_dict, country, season, goals, empty_seasons_dictionary=None):
+    if (country in global_dict.keys()):
+        global_dict[country][season] += goals
+        return   
+    else:
+        global_dict[country] = empty_seasons_dictionary.copy()
+        fill_data(global_dict, country, season, goals)
+
+
+def parse_and_fill(global_dict, url, season, empty_seasons_dictionary):
     # Step 1: Fetch the webpage content
     response = requests.get(url)
 
@@ -39,27 +49,41 @@ def fill_dictionary(dict, url, season):
         cols = [col.text.strip() for col in cols]  # Clean the text
         country = cols[3]
         goals = int(cols[5].rsplit(" ")[0])
-        if (season in dict.keys()):
-            if (country in dict[season].keys()):
-                dict[season][country] += goals
-            else:
-                dict[season][country] = goals    
-        else:
-            dict[season] = {country : goals}
+        fill_data(global_dict, country, season, goals, empty_seasons_dictionary)
+        
+def get_urls(league, season):
+    base_url = 'https://www.worldfootball.net/goalgetter/'
+    urls = []
+    if (league == "esp-primera-division" and season == "2016-2017"):
+        urls.append(base_url + league + "-" + season + "_2/")
+    elif (league == "esp-primera-division" and season == "1986-1987"):
+        spain_leagues = ["esp-primera-division-1986-1987-playoff-1-6", "esp-primera-division-1986-1987-playoff-13-18", "esp-primera-division-1986-1987-playoff-7-12", "esp-primera-division-1986-1987-vorrunde"]
+        for spain_league in spain_leagues:
+            urls.append(base_url + spain_league + "/")  
+    else:
+        urls.append(base_url + league + "-" + season + "/")
+    return urls
+
+
+def create_empty_seasons_dictionary(seasons):
+    seasons_dictionary = {} 
+    for season in seasons:
+        seasons_dictionary[season] = 0
+    return seasons_dictionary
             
 def extract_values_top_5_leagues(from_date, to_date):
     goals_per_nation_and_year = {}
     seasons = generate_seasons_years(int(from_date), int(to_date))
+    empty_seasons_dictionary = create_empty_seasons_dictionary(seasons)
     leagues = ["eng-premier-league", "fra-ligue-1", "bundesliga", "ita-serie-a", "esp-primera-division"]
-    base_url = 'https://www.worldfootball.net/goalgetter/'
+    
     for season in seasons:
         for league in leagues:
-            if (league == "esp-primera-division" and season == "2016-2017"):
-                url = base_url + league + "-" + season + "_2/"
-            else:
-                url = base_url + league + "-" + season + "/"
-            fill_dictionary(goals_per_nation_and_year, url, season)
-    return goals_per_nation_and_year
+            urls = get_urls(league, season)
+            for url in urls:
+                parse_and_fill(goals_per_nation_and_year, url, season, empty_seasons_dictionary)
+            
+    return dict(sorted(goals_per_nation_and_year.items()))
 
-final_dictionary = extract_values_top_5_leagues(2010,2020)
+final_dictionary = extract_values_top_5_leagues(1985,1988)
 print(final_dictionary)
