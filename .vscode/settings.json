@@ -1,8 +1,11 @@
 {
+    
     "cSpell.words": [
         "Escritorio",
         "fifa",
         "IDSS",
         "Polimi"
-    ]
+    ],
+    "notebook.experimental.useMarkdownRenderer": true
+    
 }
