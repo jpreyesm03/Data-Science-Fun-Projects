@@ -32,7 +32,7 @@ I uploaded the processed data to [Flourish Studio](https://app.flourish.studio/)
 💡 **Insight**: Germany currently leads, but how long can they hold their crown?
 
 ### 4. **Statistical Analysis**  
-In the notebook **"Statistical Analysis Top 5 Leagues.ipynb"**, I:  
+In the notebook [**Statistical Analysis Top 5 Leagues.ipynb**](Top%205%20Leagues/Statistical%20Analysis%20Top%205%20Leagues.ipynb), I:  
 - Used **probabilistic modeling** to predict trends.  
 - Found that **France has a 64.8% chance** of overtaking Germany as the top goal-scoring nation within the next 10 years.  
 - Projected, with 95% confidence, that France will surpass Germany by **2039**.
