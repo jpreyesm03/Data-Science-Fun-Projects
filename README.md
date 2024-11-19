@@ -57,7 +57,7 @@ To ensure robustness:
 ---
 
 ## 🚀 **Explore the Project**  
-- Data Mining, Cleaning and Manipulation: [Top 5 Leagues Goals by Nationality.ipynb](Top%205%20Leagues/Top%205%20Leagues%20goals%20by%20nationality.ipynb)  
+- Data Mining, Cleaning and Manipulation: [Top 5 Leagues Goals by Nationality.ipynb](Top%205%20Leagues/Top%205%20Leagues%20Goals%20by%20Nationality.ipynb)  
 - Statistical Hypothesis and Insight: [Statistical Analysis Top 5 Leagues.ipynb](Top%205%20Leagues/Statistical%20Analysis%20Top%205%20Leagues.ipynb)  
 - Visualization: [Video fo the Race Chart](https://public.flourish.studio/visualisation/19804828/)  
 
